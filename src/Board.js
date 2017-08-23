@@ -3,7 +3,6 @@
 // The only portions you need to work on are the helper functions (below)
 
 (function() {
-
   window.Board = Backbone.Model.extend({
 
     initialize: function (params) {
@@ -17,7 +16,7 @@
         this.set('n', params.length);
       }
     },
-
+    
     rows: function() {
       return _(_.range(this.get('n'))).map(function(rowIndex) {
         return this.get(rowIndex);
@@ -44,7 +43,7 @@
     hasAnyQueenConflictsOn: function(rowIndex, colIndex) {
       return (
         this.hasRowConflictAt(rowIndex) ||
-        this.hasColConflictAt(colIndex) ||
+        this.hasColConflictAt(colIndex) || 
         this.hasMajorDiagonalConflictAt(this._getFirstRowColumnIndexForMajorDiagonalOn(rowIndex, colIndex)) ||
         this.hasMinorDiagonalConflictAt(this._getFirstRowColumnIndexForMinorDiagonalOn(rowIndex, colIndex))
       );
@@ -79,12 +78,26 @@
     //
     // test if a specific row on this board contains a conflict
     hasRowConflictAt: function(rowIndex) {
-      return false; // fixme
+      var sum = 0;
+      for (var i = 0; i < this.get(rowIndex).length; i++) {
+        // console.log(this.get(rowIndex)[i]);
+        sum += this.get(rowIndex)[i];
+      }
+      if (sum > 1) {
+        return true;
+      }
+      return false;
     },
 
     // test if any rows on this board contain conflicts
     hasAnyRowConflicts: function() {
-      return false; // fixme
+      console.log(this.get('n'));
+      for (var i = 0; i < this.get('n'); i++) {
+        if (this.hasRowConflictAt(i)) {
+          return true;
+        }
+      }
+      return false;
     },
 
 
