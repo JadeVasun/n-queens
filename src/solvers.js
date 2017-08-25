@@ -64,21 +64,26 @@ window.findNQueensSolution = function(n) {
 
   var recurseQueens = function(row) {
     for (var col = 0; col < n; col++) {
-      board.togglePiece(row, col);
-      if (!board.hasAnyQueensConflicts()) {
-        if (row === n - 1) {
-          // solution.push(board.get(row));
-          for (var i = 0; i < n; i++) {
-            solution.push(board.get(i));
-          }
+      if (!solution.length) {
+        board.togglePiece(row, col);
+      }
+      if (!board.hasAnyQueensConflicts() && !solution.length) {
+        if (row === (n - 1)) {
+          solution = board.rows();
         } else {
           recurseQueens(row + 1);
         }
       }
-      board.togglePiece(row, col);
+      if (!solution.length) {
+        board.togglePiece(row, col);
+      }
     }
   }
   recurseQueens(0);
+
+  if (!solution.length) {
+    solution = board.rows();
+  }
 
   console.log('Single solution for ' + n + ' queens:', JSON.stringify(solution));
   return solution;
